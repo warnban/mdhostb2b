@@ -1,0 +1,17 @@
+[Unit]
+Description=M&D HOST B2B (zynqo.ru)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/mdhostb2b
+Environment=NODE_ENV=production
+EnvironmentFile=/var/www/mdhostb2b/.env
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
