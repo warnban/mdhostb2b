@@ -98,16 +98,29 @@ curl -s http://127.0.0.1:3000/ | head
 
 ---
 
-## 5. Nginx + SSL
+## 5. Nginx (сначала HTTP, потом SSL)
+
+**Не используй `nginx-zynqo.conf` до certbot** — там пути к сертификатам, которых ещё нет.
 
 ```bash
 sudo mkdir -p /var/www/certbot
-sudo cp deploy/nginx-zynqo.conf /etc/nginx/sites-available/zynqo.ru
+sudo cp deploy/nginx-zynqo-init.conf /etc/nginx/sites-available/zynqo.ru
 sudo ln -sf /etc/nginx/sites-available/zynqo.ru /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl reload nginx
+```
 
+DNS **zynqo.ru** и **www** → `186.246.5.94` (или ваш публичный IP).
+
+```bash
 sudo certbot --nginx -d zynqo.ru -d www.zynqo.ru
+```
+
+После certbot (опционально) — полный конфиг с редиректом www:
+
+```bash
+sudo cp deploy/nginx-zynqo.conf /etc/nginx/sites-available/zynqo.ru
+sudo nginx -t && sudo systemctl reload nginx
 ```
 
 ---
